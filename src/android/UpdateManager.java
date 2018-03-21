@@ -4,7 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.Resources;
+import android.content.res.Configuration;
+import android.util.DisplayMetrics;
 import android.os.Handler;
+import android.os.Build;
 import android.widget.ProgressBar;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -16,7 +20,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Locale;
 /**
  * Created by LuoWen on 2015/10/27.
  * <p/>
@@ -39,6 +43,7 @@ public class UpdateManager {
     private CordovaInterface cordova;
     private CallbackContext callbackContext;
     private String packageName;
+    private String preferLocale;
     private Context mContext;
     private MsgBox msgBox;
     private Boolean isDownloading = false;
@@ -73,7 +78,29 @@ public class UpdateManager {
         this.callbackContext = callbackContext;
         this.updateXmlUrl = args.getString(0);
         this.options = args.getJSONObject(1);
+        this.preferLocale = args.getString(2);
+        if (!this.preferLocale.isEmpty()) {
+            this.setLocale(new Locale(this.preferLocale));    
+        }
+        
         return this;
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setLocale(Locale locale){
+        Resources resources = this.mContext.getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+            configuration.setLocale(locale);
+        } else{
+            configuration.locale=locale;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            this.mContext.createConfigurationContext(configuration);
+        } else {
+            resources.updateConfiguration(configuration,displayMetrics);
+        }
     }
 
     private Handler mHandler = new Handler() {

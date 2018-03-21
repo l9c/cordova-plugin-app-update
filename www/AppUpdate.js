@@ -6,14 +6,15 @@ var exec = require('cordova/exec');
  * This function can be called in three ways:
  * 1. checkAppUpdate(updateUrl)
  * 2. checkAppUpdate(updateUrl, options)
- * 3. checkAppUpdate(sucessCallback, errorCallback, updateUrl, options)
+ * 3. checkAppUpdate(sucessCallback, errorCallback, updateUrl, options, locale)
  * 
  * @param successOrUrl The success callback or the URL where the update data  is located
  * @param errorOrOptions The function called on error or the authentication options
  * @param updateUrl The URL where the update data is located
  * @param options An object that may contain the authentication options
+ * @param locale The prefered language
  */
-exports.checkAppUpdate = function(successOrUrl, errorOrOptions, updateUrl, options) {
+exports.checkAppUpdate = function(successOrUrl, errorOrOptions, updateUrl, options, locale) {
     // If the update URL hasnt been set in the updateUrl then assume no callbacks passed
     var successCallback = updateUrl ? successOrUrl : null;
     var errorCallback = updateUrl ? errorOrOptions : null;
@@ -27,6 +28,7 @@ exports.checkAppUpdate = function(successOrUrl, errorOrOptions, updateUrl, optio
     updateUrl = updateUrl ? updateUrl : successOrUrl;
     
     options = options ? options : {};
+    locale = locale || '';
     
-    exec(successCallback, errorCallback, "AppUpdate", "checkAppUpdate",  [updateUrl, options]);
+    exec(successCallback, errorCallback, "AppUpdate", "checkAppUpdate",  [updateUrl, options, locale]);
 };
