@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="update_latest">Now you have the latest update</string>
+    <string name="update_latest">Already up-to-date</string>
     <string name="update_title">New update</string>
-    <string name="update_message">The software need to be updated！</string>
+    <string name="update_message">New update available</string>
     <string name="update_update_btn">Update</string>
     <string name="updating">Updating</string>
     <string name="update_cancel">Cancel</string>
