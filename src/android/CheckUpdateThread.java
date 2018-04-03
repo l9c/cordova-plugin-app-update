@@ -141,11 +141,11 @@ public class CheckUpdateThread implements Runnable {
         ParseXmlService service = new ParseXmlService();
         try {
             setMHashMap(service.parseXml(is));
+            if (null != getMHashMap()) {
+                versionCodeRemote = Integer.valueOf(getMHashMap().get("version"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        if (null != getMHashMap()) {
-            versionCodeRemote = Integer.valueOf(getMHashMap().get("version"));
         }
 
         return versionCodeRemote;
