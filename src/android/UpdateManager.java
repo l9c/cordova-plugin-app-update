@@ -174,10 +174,13 @@ public class UpdateManager {
                 msgBox.showDownloadDialog(null, null, null);
                 mHandler.sendEmptyMessage(Constants.VERSION_UPDATING);
             } else {
-                LOG.d(TAG, "need update");
+                LOG.d(TAG, "update now");
                 // 显示提示对话框
-                msgBox.showNoticeDialog(noticeDialogOnClick);
+                //msgBox.showNoticeDialog(noticeDialogOnClick);
+                //
+                //update without notice
                 mHandler.sendEmptyMessage(Constants.VERSION_NEED_UPDATE);
+                mHandler.sendEmptyMessage(Constants.DOWNLOAD_CLICK_START);
             }
         } else {
             mHandler.sendEmptyMessage(Constants.VERSION_UP_TO_UPDATE);
