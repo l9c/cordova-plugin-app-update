@@ -4,9 +4,6 @@
 
 [![NPM](https://nodei.co/npm/cordova-plugin-app-update.png?downloads=true&downloadRank=true)](https://nodei.co/npm/cordova-plugin-app-update/)
 
-[![Code Sponsor](https://app.codesponsor.io/embed/hX3B5zbeSNNBz6vUNKnjqriV/vaenow/cordova-plugin-app-update.svg)](https://app.codesponsor.io/link/hX3B5zbeSNNBz6vUNKnjqriV/vaenow/cordova-plugin-app-update)
-
-
 # cordova-plugin-app-update
 App updater for Cordova/PhoneGap
 
@@ -36,12 +33,14 @@ Just clone and install this demo.
 `cordova plugin add cordova-plugin-app-update --save`
 
 # Usage
- - Simple:
+
+- Simple:
 ```js
 var updateUrl = "http://192.168.0.1/version.xml";
 window.AppUpdate.checkAppUpdate(onSuccess, onFail, updateUrl);
 ```
- - Verbose
+
+- Verbose
 ```js
 var appUpdate = cordova.require('cordova-plugin-app-update.AppUpdate');
 var updateUrl = "http://192.168.0.1/version.xml";
@@ -54,6 +53,14 @@ appUpdate.checkAppUpdate(onSuccess, onFail, updateUrl, {
     'authType' : 'basic',
     'username' : 'test',
     'password' : 'test'
+})
+```
+
+- Skip dialog boxes
+```js
+appUpdate.checkAppUpdate(onSuccess, onFail, updateUrl, {
+    'skipPromptDialog' : true,
+    'skipProgressDialog' : true
 })
 ```
 
@@ -112,6 +119,11 @@ versionName | versionCode
     int NO_SUCH_METHOD = 501;
 
     /**
+     * Permissions
+     */
+    int PERMISSION_DENIED = 601;
+
+    /**
      * 未知错误
      */
     int UNKNOWN_ERROR = 901;
@@ -125,6 +137,9 @@ versionName | versionCode
 * 🇧🇩 bn 
 * 🇵🇱 pl 
 * 🇮🇹 it 
+* 🇪🇸 es
+* 🇷🇺 ru
+* 🇰🇷 ko
 
 # Platforms
 Android only

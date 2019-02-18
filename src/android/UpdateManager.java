@@ -80,9 +80,9 @@ public class UpdateManager {
         this.options = args.getJSONObject(1);
         this.preferLocale = args.getString(2);
         if (!this.preferLocale.isEmpty()) {
-            this.setLocale(new Locale(this.preferLocale));    
+            this.setLocale(new Locale(this.preferLocale));
         }
-        
+
         return this;
     }
 
@@ -160,6 +160,15 @@ public class UpdateManager {
     }
 
     /**
+     * Permissions denied
+     */
+    public void permissionDenied(String errMsg) {
+        LOG.d(TAG, "permissionsDenied..");
+
+        callbackContext.error(Utils.makeJSON(Constants.PERMISSION_DENIED, errMsg));
+    }
+
+    /**
      * 对比版本号
      */
     private void compareVersions() {
@@ -167,20 +176,31 @@ public class UpdateManager {
         int versionCodeLocal = version.getLocal();
         int versionCodeRemote = version.getRemote();
 
+        boolean skipPromptDialog = false;
+        try {
+            skipPromptDialog = options.getBoolean("skipPromptDialog");
+        } catch (JSONException e) {}
+
+        boolean skipProgressDialog = false;
+        try {
+            skipProgressDialog = options.getBoolean("skipProgressDialog");
+        } catch (JSONException e) {}
+
         //比对版本号
         //检查软件是否有更新版本
         if (versionCodeLocal < versionCodeRemote) {
             if (isDownloading) {
-                msgBox.showDownloadDialog(null, null, null);
+                msgBox.showDownloadDialog(null, null, null, !skipProgressDialog);
                 mHandler.sendEmptyMessage(Constants.VERSION_UPDATING);
             } else {
-                LOG.d(TAG, "update now");
-                // 显示提示对话框
-                //msgBox.showNoticeDialog(noticeDialogOnClick);
-                //
-                //update without notice
-                mHandler.sendEmptyMessage(Constants.VERSION_NEED_UPDATE);
-                mHandler.sendEmptyMessage(Constants.DOWNLOAD_CLICK_START);
+                LOG.d(TAG, "need update");
+                if (skipPromptDialog) {
+                    mHandler.sendEmptyMessage(Constants.DOWNLOAD_CLICK_START);
+                } else {
+                    // 显示提示对话框
+                    msgBox.showNoticeDialog(noticeDialogOnClick);
+                    mHandler.sendEmptyMessage(Constants.VERSION_NEED_UPDATE);
+                }
             }
         } else {
             mHandler.sendEmptyMessage(Constants.VERSION_UP_TO_UPDATE);
@@ -199,11 +219,19 @@ public class UpdateManager {
 
     private void emitNoticeDialogOnClick() {
         isDownloading = true;
+
+        boolean skipProgressDialog = false;
+        try {
+            skipProgressDialog = options.getBoolean("skipProgressDialog");
+        } catch (JSONException e) {}
+
         // 显示下载对话框
         Map<String, Object> ret = msgBox.showDownloadDialog(
                 downloadDialogOnClickNeg,
                 downloadDialogOnClickPos,
-                downloadDialogOnClickNeu);
+                downloadDialogOnClickNeu,
+                !skipProgressDialog);
+
         // 下载文件
         downloadApk((AlertDialog) ret.get("dialog"), (ProgressBar) ret.get("progress"));
     }
