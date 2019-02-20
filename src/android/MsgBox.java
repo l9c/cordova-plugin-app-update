@@ -40,6 +40,7 @@ public class MsgBox {
     public Dialog showNoticeDialog(OnClickListener onClickListener) {
         if (noticeDialog == null) {
             LOG.d(TAG, "showNoticeDialog");
+            Utils.logToFile("showNoticeDialog");
             // 构造对话框
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setTitle(msgHelper.getString(MsgHelper.UPDATE_TITLE));
@@ -65,7 +66,7 @@ public class MsgBox {
                                                   boolean showDialog) {
         if (downloadDialog == null) {
             LOG.d(TAG, "showDownloadDialog");
-
+            Utils.logToFile("showDownloadDialog");
             // 构造软件下载对话框
             AlertDialog.Builder builder = new Builder(mContext);
             builder.setTitle(msgHelper.getString(MsgHelper.UPDATING));
@@ -109,6 +110,7 @@ public class MsgBox {
     public Dialog showErrorDialog(OnClickListener errorDialogOnClick) {
         if (this.errorDialog == null) {
             LOG.d(TAG, "initErrorDialog");
+            Utils.logToFile("initErrorDialog");
             // 构造对话框
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setTitle(msgHelper.getString(MsgHelper.UPDATE_ERROR_TITLE));

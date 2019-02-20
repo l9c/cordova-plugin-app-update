@@ -14,7 +14,8 @@ import org.apache.cordova.BuildHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-
+import java.io.StringWriter;
+import java.io.PrintWriter;
 /**
  * Created by LuoWen on 2015/10/27.
  */
@@ -23,14 +24,25 @@ public class CheckAppUpdate extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("checkAppUpdate")) {
-            getUpdateManager().options(args, callbackContext);
-            if (verifyInstallPermission() && verifyOtherPermissions())
-                getUpdateManager().checkUpdate();
-            return true;
+        try {
+            if (action.equals("checkAppUpdate")) {
+                getUpdateManager().options(args, callbackContext);
+                if (verifyInstallPermission() && verifyOtherPermissions())
+                    getUpdateManager().checkUpdate();
+                return true;
+            }
+            Utils.logToFile("no method for: "+action);
+            callbackContext.error(Utils.makeJSON(Constants.NO_SUCH_METHOD, "No such method: " + action));
+        }catch (Exception e ){
+            Utils.logToFile("error on exec:");
+
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+//            String sStackTrace = sw.toString(); // stack trace as a string
+            Utils.logToFile(sw.toString());
         }
 
-        callbackContext.error(Utils.makeJSON(Constants.NO_SUCH_METHOD, "No such method: " + action));
         return false;
     }
 

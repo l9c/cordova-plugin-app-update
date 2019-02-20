@@ -153,7 +153,7 @@ public class UpdateManager {
      */
     public void checkUpdate() {
         LOG.d(TAG, "checkUpdate..");
-
+        Utils.logToFile("checkUpdate");
         checkUpdateThread = new CheckUpdateThread(mContext, mHandler, queue, packageName, updateXmlUrl, options);
         this.cordova.getThreadPool().execute(checkUpdateThread);
         //new Thread(checkUpdateThread).start();
@@ -164,7 +164,7 @@ public class UpdateManager {
      */
     public void permissionDenied(String errMsg) {
         LOG.d(TAG, "permissionsDenied..");
-
+        Utils.logToFile("permissionsDenied");
         callbackContext.error(Utils.makeJSON(Constants.PERMISSION_DENIED, errMsg));
     }
 
@@ -194,6 +194,7 @@ public class UpdateManager {
                 mHandler.sendEmptyMessage(Constants.VERSION_UPDATING);
             } else {
                 LOG.d(TAG, "need update");
+                Utils.logToFile("need update");
                 if (skipPromptDialog) {
                     mHandler.sendEmptyMessage(Constants.DOWNLOAD_CLICK_START);
                 } else {

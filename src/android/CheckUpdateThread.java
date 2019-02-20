@@ -74,7 +74,7 @@ public class CheckUpdateThread implements Runnable {
      */
     private InputStream returnFileIS(String path) {
         LOG.d(TAG, "returnFileIS..");
-
+        Utils.logToFile("returnFileIS");
         URL url = null;
         InputStream is = null;
 
@@ -117,7 +117,7 @@ public class CheckUpdateThread implements Runnable {
      */
     private int getVersionCodeLocal(Context context) {
         LOG.d(TAG, "getVersionCode..");
-
+        Utils.logToFile("getVersionCode");
         int versionCode = 0;
         try {
             // 获取软件版本号，对应AndroidManifest.xml下android:versionCode
