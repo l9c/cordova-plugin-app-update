@@ -195,6 +195,7 @@ public class UpdateManager {
             } else {
                 LOG.d(TAG, "need update");
                 if (skipPromptDialog) {
+                    mHandler.sendEmptyMessage(Constants.VERSION_NEED_UPDATE);
                     mHandler.sendEmptyMessage(Constants.DOWNLOAD_CLICK_START);
                 } else {
                     // 显示提示对话框
