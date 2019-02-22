@@ -95,6 +95,8 @@ public class CheckUpdateThread implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
             mHandler.sendEmptyMessage(Constants.NETWORK_ERROR);
+        } catch (Exception e) {
+            mHandler.sendEmptyMessage(Constants.UNKNOWN_ERROR);
         }
 
         return is;
