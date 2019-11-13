@@ -64,6 +64,13 @@ appUpdate.checkAppUpdate(onSuccess, onFail, updateUrl, {
 })
 ```
 
+- Apk download without xml checking
+```js
+appUpdate.checkAppUpdate(onSuccess, onFail, "", {
+    'apkUrl' : "http://example.com/123.apk",
+    'versionCodeRemote' : 123
+})
+```
 ### versionCode
 
 You can simply get the versionCode from typing those code in `Console`

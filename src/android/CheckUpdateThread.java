@@ -31,6 +31,7 @@ public class CheckUpdateThread implements Runnable {
     private List<Version> queue;
     private String packageName;
     private String updateXmlUrl;
+    private int versionCodeRemote;
     private AuthenticationOptions authentication;
     private Handler mHandler;
 
@@ -49,13 +50,22 @@ public class CheckUpdateThread implements Runnable {
         this.updateXmlUrl = updateXmlUrl;
         this.authentication = new AuthenticationOptions(options);
         this.mHandler = mHandler;
+        try {
+            this.versionCodeRemote = options.getInt("versionCodeRemote");
+        } catch (JSONException e) {
+            this.versionCodeRemote = 0;
+        }
     }
 
     @Override
     public void run() {
         int versionCodeLocal = getVersionCodeLocal(mContext); // 获取当前软件版本
-        int versionCodeRemote = getVersionCodeRemote();  //获取服务器当前软件版本
-
+        int versionCodeRemote;  //获取服务器当前软件版本
+        if (this.versionCodeRemote > 0) {
+            versionCodeRemote = this.versionCodeRemote;
+        } else {
+            versionCodeRemote = getVersionCodeRemote();
+        }
         queue.clear(); //ensure the queue is empty
         queue.add(new Version(versionCodeLocal, versionCodeRemote));
 

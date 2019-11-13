@@ -31,6 +31,7 @@ public class DownloadApkThread implements Runnable {
     HashMap<String, String> mHashMap;
     /* 下载保存路径 */
     private String mSavePath;
+    private String apkUrl;
     /* 记录进度条数量 */
     private int progress;
     /* 是否取消更新 */
@@ -50,6 +51,19 @@ public class DownloadApkThread implements Runnable {
         this.downloadHandler = new DownloadHandler(mContext, mProgress, mDownloadDialog, this.mSavePath, mHashMap);
     }
 
+    public DownloadApkThread(Context mContext, Handler mHandler, ProgressBar mProgress, AlertDialog mDownloadDialog, JSONObject options) {
+        this.mDownloadDialog = mDownloadDialog;
+        this.mHandler = mHandler;
+        this.authentication = new AuthenticationOptions(options);
+
+        try {
+            this.apkUrl = options.getString("apkUrl");
+        } catch (JSONException e) {}
+
+
+        this.mSavePath = Environment.getExternalStorageDirectory() + "/" + "download"; // SD Path
+        this.downloadHandler = new DownloadHandler(mContext, mProgress, mDownloadDialog, this.mSavePath, mHashMap);
+    }
 
     @Override
     public void run() {
@@ -67,7 +81,14 @@ public class DownloadApkThread implements Runnable {
             // 判断SD卡是否存在，并且是否具有读写权限
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 // 获得存储卡的路径
-                URL url = new URL(mHashMap.get("url"));
+                URL url;
+                if (this.apkUrl.isEmpty()) {
+                    url = new URL(mHashMap.get("url"));
+                } else {
+                    url = new URL(this.apkUrl);
+                }
+
+
                 // 创建连接
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
