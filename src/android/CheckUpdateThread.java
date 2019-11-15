@@ -51,9 +51,11 @@ public class CheckUpdateThread implements Runnable {
         this.authentication = new AuthenticationOptions(options);
         this.mHandler = mHandler;
         try {
+            LOG.d(TAG, "trying versionCode from options " + options);
             this.versionCodeRemote = options.getInt("versionCodeRemote");
-        } catch (JSONException e) {
+        } catch (Exception e) {
             this.versionCodeRemote = 0;
+            e.printStackTrace();
         }
     }
 
