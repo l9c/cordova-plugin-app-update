@@ -16,19 +16,21 @@ var exec = require('cordova/exec');
  */
 exports.checkAppUpdate = function(successOrUrl, errorOrOptions, updateUrl, options, locale) {
     // If the update URL hasnt been set in the updateUrl then assume no callbacks passed
-    var successCallback = updateUrl ? successOrUrl : null;
-    var errorCallback = updateUrl ? errorOrOptions : null;
+    var successCallback = typeof updateUrl !== 'undefined' ? successOrUrl : null;
+    var errorCallback = typeof updateUrl !== 'undefined' ? errorOrOptions : null;
     
     // This handles case 2, where there is an updateURL and options set
-    if ( !updateUrl && typeof errorOrOptions === 'object' ) {
+    if ( typeof updateUrl === 'undefined' && typeof errorOrOptions === 'object' ) {
         options = errorOrOptions;
     }
     
     // If there is no updateUrl then assume that the URL is the first paramater
-    updateUrl = updateUrl ? updateUrl : successOrUrl;
-    
+    updateUrl = typeof updateUrl !== 'undefined' ? updateUrl : successOrUrl;
+
     options = options ? options : {};
     locale = locale || '';
     
     exec(successCallback, errorCallback, "AppUpdate", "checkAppUpdate",  [updateUrl, options, locale]);
 };
+
+
