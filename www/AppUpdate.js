@@ -29,8 +29,7 @@ exports.checkAppUpdate = function(successOrUrl, errorOrOptions, updateUrl, optio
 
     options = options ? options : {};
     locale = locale || '';
-    console.log("using update options:");
-    console.log(options)
+
     exec(successCallback, errorCallback, "AppUpdate", "checkAppUpdate",  [updateUrl, options, locale]);
 };
 

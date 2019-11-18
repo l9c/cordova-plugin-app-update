@@ -32,6 +32,7 @@ public class DownloadApkThread implements Runnable {
     /* 下载保存路径 */
     private String mSavePath;
     private String apkUrl;
+    private Context mContext;
     /* 记录进度条数量 */
     private int progress;
     /* 是否取消更新 */
@@ -45,6 +46,7 @@ public class DownloadApkThread implements Runnable {
         this.mDownloadDialog = mDownloadDialog;
         this.mHashMap = mHashMap;
         this.mHandler = mHandler;
+        this.mContext = mContext;
         this.authentication = new AuthenticationOptions(options);
 
         this.mSavePath = Environment.getExternalStorageDirectory() + "/" + "download"; // SD Path
@@ -87,8 +89,13 @@ public class DownloadApkThread implements Runnable {
                 } else {
                     url = new URL(this.apkUrl);
                 }
-
-
+                String fileName;
+                try {
+                    fileName = mHashMap.get("name");
+                } catch (Exception e){
+                    fileName = mContext.getPackageName();
+                }
+                fileName += ".apk";
                 // 创建连接
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -107,7 +114,7 @@ public class DownloadApkThread implements Runnable {
                 if (!file.exists()) {
                     file.mkdir();
                 }
-                File apkFile = new File(mSavePath, mHashMap.get("name")+".apk");
+                File apkFile = new File(mSavePath, fileName);
                 FileOutputStream fos = new FileOutputStream(apkFile);
                 int count = 0;
                 // 缓存

@@ -92,9 +92,17 @@ public class DownloadHandler extends Handler {
     private void installApk() {
         LOG.d(TAG, "Installing APK");
 
-        File apkFile = new File(mSavePath, mHashMap.get("name")+".apk");
+        String fileName;
+        try {
+            fileName = mHashMap.get("name");
+        } catch (Exception e){
+            fileName = mContext.getPackageName();
+        }
+        fileName += ".apk";
+
+        File apkFile = new File(mSavePath, fileName);
         if (!apkFile.exists()) {
-            LOG.e(TAG, "Could not find APK: " + mHashMap.get("name"));
+            LOG.e(TAG, "Could not find APK: " + fileName);
             return;
         }
 
