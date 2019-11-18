@@ -57,7 +57,7 @@ public class DownloadApkThread implements Runnable {
         this.mDownloadDialog = mDownloadDialog;
         this.mHandler = mHandler;
         this.authentication = new AuthenticationOptions(options);
-
+        this.mContext = mContext;
         try {
             this.apkUrl = options.getString("apkUrl");
         } catch (JSONException e) {}
