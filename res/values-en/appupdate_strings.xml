@@ -4,7 +4,7 @@
     <string name="update_title">New update</string>
     <string name="update_message">New update available</string>
     <string name="update_update_btn">Update</string>
-    <string name="updating">Updating</string>
+    <string name="updating">Downloading</string>
     <string name="update_cancel">Cancel</string>
     <string name="update_bg">Update in background</string>
     <string name="download_complete">Download complete</string>
