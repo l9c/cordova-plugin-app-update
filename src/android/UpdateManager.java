@@ -81,6 +81,7 @@ public class UpdateManager {
         this.options = args.getJSONObject(1);
         this.preferLocale = args.getString(2);
         if (!this.preferLocale.isEmpty()) {
+            LOG.w(TAG, "Locale option deprecated");
             this.setLocale(new Locale(this.preferLocale));
         }
         try{

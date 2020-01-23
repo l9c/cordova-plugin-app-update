@@ -12,7 +12,7 @@ var exec = require('cordova/exec');
  * @param errorOrOptions The function called on error or the authentication options
  * @param updateUrl The URL where the update data is located
  * @param options An object that may contain the authentication options
- * @param locale The prefered language
+ * @param locale The prefered language (deprecated)
  */
 exports.checkAppUpdate = function(successOrUrl, errorOrOptions, updateUrl, options, locale) {
     // If the update URL hasnt been set in the updateUrl then assume no callbacks passed
