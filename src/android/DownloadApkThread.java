@@ -53,7 +53,7 @@ public class DownloadApkThread implements Runnable {
         this.downloadHandler = new DownloadHandler(mContext, mProgress, mDownloadDialog, this.mSavePath, mHashMap);
     }
 
-    public DownloadApkThread(Context mContext, Handler mHandler, ProgressBar mProgress, AlertDialog mDownloadDialog, JSONObject options) {
+    public DownloadApkThread(Context mContext, Handler mHandler, ProgressBar mProgress, AlertDialog mDownloadDialog, JSONObject options, JSONObject translations) {
         this.mDownloadDialog = mDownloadDialog;
         this.mHandler = mHandler;
         this.authentication = new AuthenticationOptions(options);
@@ -64,7 +64,7 @@ public class DownloadApkThread implements Runnable {
 
 
         this.mSavePath = Environment.getExternalStorageDirectory() + "/" + "download"; // SD Path
-        this.downloadHandler = new DownloadHandler(mContext, mProgress, mDownloadDialog, this.mSavePath, mHashMap);
+        this.downloadHandler = new DownloadHandler(mContext, mProgress, mDownloadDialog, this.mSavePath, mHashMap, translations);
     }
 
     @Override

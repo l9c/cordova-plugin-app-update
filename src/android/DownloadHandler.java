@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 import android.support.v4.content.FileProvider;
+import org.json.JSONObject;
 import java.io.File;
 import java.util.HashMap;
 
@@ -47,6 +48,15 @@ public class DownloadHandler extends Handler {
         this.mHashMap = mHashMap;
     }
 
+    public DownloadHandler(Context mContext, ProgressBar mProgress, AlertDialog mDownloadDialog, String mSavePath, HashMap<String, String> mHashMap, JSONObject translations) {
+        this.msgHelper = new MsgHelper(mContext.getPackageName(), mContext.getResources(), translations);
+        this.mDownloadDialog = mDownloadDialog;
+        this.mContext = mContext;
+        this.mProgress = mProgress;
+        this.mSavePath = mSavePath;
+        this.mHashMap = mHashMap;
+    }
+
     public void handleMessage(Message msg) {
         switch (msg.what) {
             // 正在下载
@@ -70,6 +80,9 @@ public class DownloadHandler extends Handler {
 
     public void updateMsgDialog() {
         mDownloadDialog.setTitle(msgHelper.getString(MsgHelper.DOWNLOAD_COMPLETE_TITLE));
+        if (msgHelper.hasTranslation()) {
+            mDownloadDialog.setTitle(msgHelper.getTranslateFromJson(MsgHelper.DOWNLOAD_COMPLETE_TITLE));
+        }
         if (mDownloadDialog.isShowing()) {
             mDownloadDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.GONE); //Update in background
             mDownloadDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE); //Install Manually

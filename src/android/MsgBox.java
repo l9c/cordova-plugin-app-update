@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import org.apache.cordova.LOG;
-
+import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +31,10 @@ public class MsgBox {
         this.mContext = mContext;
         this.msgHelper = new MsgHelper(mContext.getPackageName(), mContext.getResources());
     }
-
+    public MsgBox(Context mContext, JSONObject translations) {
+        this.mContext = mContext;
+        this.msgHelper = new MsgHelper(mContext.getPackageName(), mContext.getResources(), translations);
+    }
     /**
      * 显示软件更新对话框
      *
@@ -89,6 +92,14 @@ public class MsgBox {
 
         downloadDialog.setTitle(msgHelper.getString(MsgHelper.UPDATING));
         downloadDialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失
+
+
+        if (msgHelper.hasTranslation()) {
+                downloadDialog.setTitle(msgHelper.getTranslateFromJson(MsgHelper.UPDATING));
+                downloadDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText(msgHelper.getTranslateFromJson(MsgHelper.UPDATE_BG));
+                downloadDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setText(msgHelper.getTranslateFromJson(MsgHelper.DOWNLOAD_COMPLETE_NEU_BTN));
+                downloadDialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(msgHelper.getTranslateFromJson(MsgHelper.DOWNLOAD_COMPLETE_POS_BTN));
+        }
         if (downloadDialog.isShowing()) {
             downloadDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.VISIBLE); //Update in background
             downloadDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.GONE); //Install Manually

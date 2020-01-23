@@ -39,6 +39,7 @@ public class UpdateManager {
      */
     private String updateXmlUrl;
     private JSONObject options;
+    private JSONObject translation;
     private JSONArray args;
     private CordovaInterface cordova;
     private CallbackContext callbackContext;
@@ -82,7 +83,13 @@ public class UpdateManager {
         if (!this.preferLocale.isEmpty()) {
             this.setLocale(new Locale(this.preferLocale));
         }
+        try{
+            this.translation = options.getJSONObject("translations");
+        }catch (JSONException e) {}
 
+        if (this.translation != null) {
+            this.msgBox = new MsgBox(mContext, translation);
+        }
         return this;
     }
 
@@ -289,7 +296,7 @@ public class UpdateManager {
 
         // 启动新线程下载软件
         if (this.updateXmlUrl.isEmpty()){
-            downloadApkThread = new DownloadApkThread(mContext, mHandler, mProgress, mDownloadDialog, options);
+            downloadApkThread = new DownloadApkThread(mContext, mHandler, mProgress, mDownloadDialog, options, translation);
         } else {
             downloadApkThread = new DownloadApkThread(mContext, mHandler, mProgress, mDownloadDialog, checkUpdateThread.getMHashMap(), options);
         }

@@ -1,14 +1,15 @@
 package com.vaenow.appupdate.android;
 
 import android.content.res.Resources;
-
+import org.json.JSONObject;
+import org.json.JSONException;
 /**
  * Created by LuoWen on 16/9/16.
  */
 public class MsgHelper {
     private String packageName;
     private Resources resources;
-
+    private JSONObject translations;
     public static String UPDATE_TITLE = "update_title";
     public static String UPDATE_MESSAGE = "update_message";
     public static String UPDATE_UPDATE_BTN = "update_update_btn";
@@ -29,6 +30,12 @@ public class MsgHelper {
         this.resources = resources;
     }
 
+    MsgHelper(String packageName, Resources resources, JSONObject translations) {
+        this.packageName = packageName;
+        this.resources = resources;
+        this.translations = translations;
+    }
+
     public int getId(String name) {
         return resources.getIdentifier(name, "id", packageName);
     }
@@ -37,7 +44,22 @@ public class MsgHelper {
         return resources.getIdentifier(name, "string", packageName);
     }
 
+    public String getTranslateFromJson(String name) {
+        try{
+            return translations.getString(name);
+        }catch (JSONException e) {
+            return name.replace('_', ' ');
+        }
+    }
     public int getLayout(String name) {
         return resources.getIdentifier(name, "layout", packageName);
+    }
+
+    public boolean hasTranslation() {
+        return this.translations != null;
+    }
+
+    public String translation() {
+        return this.translations.toString();
     }
 }
