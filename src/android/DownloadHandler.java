@@ -124,7 +124,9 @@ public class DownloadHandler extends Handler {
         // 通过Intent安装APK文件
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
             LOG.d(TAG, "Build SDK Greater than or equal to Nougat");
-            String applicationId = (String) BuildHelper.getBuildConfigValue((Activity) mContext, "APPLICATION_ID");
+            //workaround for BuildConfig error https://github.com/apache/cordova-android/issues/513
+            String applicationId = mContext.getPackageName();
+            //String applicationId = (String) BuildHelper.getBuildConfigValue((Activity) mContext, "APPLICATION_ID");
             Uri apkUri = FileProvider.getUriForFile(mContext, applicationId + ".appupdate.provider", apkFile);
             Intent i = new Intent(Intent.ACTION_INSTALL_PACKAGE);
             i.setData(apkUri);
