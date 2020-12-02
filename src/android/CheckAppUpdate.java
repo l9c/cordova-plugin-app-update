@@ -68,7 +68,10 @@ public class CheckAppUpdate extends CordovaPlugin {
     public boolean verifyInstallPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (!cordova.getActivity().getPackageManager().canRequestPackageInstalls()) {
-                String applicationId = (String) BuildHelper.getBuildConfigValue(cordova.getActivity(), "APPLICATION_ID");
+                //String applicationId = (String) BuildHelper.getBuildConfigValue(cordova.getActivity(), "APPLICATION_ID");
+                //workaround for BuildConfig error https://github.com/apache/cordova-android/issues/513
+                String applicationId = mContext.getPackageName();
+
                 Uri packageUri = Uri.parse("package:" + applicationId);
                 Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
                     .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
